@@ -46,6 +46,7 @@ public class RewardNetworkImpl implements RewardNetwork {
 		//Reward an account
 		MonetaryAmount monetaryAmount = merchantNumber.calculateBenefitFor(account, dining);
 		AccountContribution accountContribution = account.makeContribution(monetaryAmount);
+		accountRepository.updateBeneficiaries(account);
 		//Return the corresponding reward confirmation
 		RewardConfirmation rewardConfirmation = rewardRepository.confirmReward(accountContribution, dining);
 		return rewardConfirmation;
