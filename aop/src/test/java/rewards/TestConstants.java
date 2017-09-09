@@ -1,8 +1,6 @@
 package rewards;
 
 public class TestConstants {
-	
-	// TODO-01: Enable checking of console output in our Tests.
 	//
 	// IMPORTANT NOTE: The JUnit tests you will run in this lab already
 	// work. Just getting a green test does not indicate success. You must
