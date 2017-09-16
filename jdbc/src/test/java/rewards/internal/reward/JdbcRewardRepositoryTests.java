@@ -1,26 +1,24 @@
 package rewards.internal.reward;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import common.datetime.SimpleDate;
+import common.money.MonetaryAmount;
+import common.money.Percentage;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-
 import rewards.AccountContribution;
 import rewards.Dining;
 import rewards.RewardConfirmation;
 import rewards.internal.account.Account;
-import common.datetime.SimpleDate;
-import common.money.MonetaryAmount;
-import common.money.Percentage;
+
+import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests the JDBC reward repository with a test data source to verify data access and relational-to-object mapping
@@ -60,12 +58,8 @@ public class JdbcRewardRepositoryTests {
 
 	private void verifyRewardInserted(RewardConfirmation confirmation, Dining dining) throws SQLException {
 		assertEquals(1, getRewardCount());
-		
-		//	TODO-02: Use the JdbcTemplate to query for a map of all values in the T_REWARD table based on the
-		// 	confirmationNumber. After making the changes, execute the test class to verify its 
-		//	successful execution.
-		
-		Map<String, Object> values = null;
+		String sql = "SELECT * FROM T_REWARD where CONFIRMATION_NUMBER = ? ";
+		Map<String, Object> values = jdbcTemplate.queryForMap(sql,confirmation.getConfirmationNumber());
 		verifyInsertedValues(confirmation, dining, values);
 	}
 
@@ -80,8 +74,8 @@ public class JdbcRewardRepositoryTests {
 	}
 
 	private int getRewardCount() throws SQLException {
-		// TODO-01: Use the JdbcTemplate to query for the number of rows in the T_REWARD table
-		return -1;
+		String sql = "SELECT count(*) from T_REWARD";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 
 	private DataSource createTestDataSource() {
