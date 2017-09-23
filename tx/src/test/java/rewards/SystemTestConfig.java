@@ -5,9 +5,11 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
 import config.RewardsConfig;
+import org.springframework.transaction.PlatformTransactionManager;
 
 
 @Configuration
@@ -28,7 +30,9 @@ public class SystemTestConfig {
 			.build();
 	}	
 	
-	
-	//	TODO-02: Define a bean named 'transactionManager' that configures a DataSourceTransactionManager 
-	
+
+	@Bean
+	public PlatformTransactionManager platformTransactionManager() {
+		return new DataSourceTransactionManager(dataSource());
+	}
 }
