@@ -1,13 +1,15 @@
 package config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
- * TODO-02: Add an InternalResourceViewResolver bean definition.
  * <p>
  * Set the prefix and suffix properties - the JSP views are all in
  * <code>src/main/webapp/WEB-INF/views</code>. Refer to the notes for help.
@@ -17,6 +19,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan("accounts.web")
 @EnableWebMvc
 public class MvcConfig extends WebMvcConfigurerAdapter {
+
+
+	/**
+	 * Establish a ViewResolver that adds a prefix / suffix to
+	 * the view name
+	 */
+
+	@Bean
+	public ViewResolver internalViewResolver() {
+		InternalResourceViewResolver irvr = new InternalResourceViewResolver();
+		irvr.setPrefix("/WEB-INF/views/");
+		irvr.setSuffix(".jsp");
+		return  irvr;
+	}
 
 	/**
 	 * Map URL /resources/* to serve static resources from classpath:/static/*
