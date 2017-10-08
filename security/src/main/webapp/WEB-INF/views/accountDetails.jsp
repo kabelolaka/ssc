@@ -63,59 +63,50 @@
 				</div>
 			</div>
 			
-			<%-- TODO-10: Only viewers should be allowed to view beneficiaries information. 
-				Hide the table row below from all users who do not have the "VIEWER" role --%>
-			<div>
-				<h2>
-					Beneficiaries
-				</h2>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>
-								Name
-							</th>
-							<th>
-								Allocation
-							</th>
-							<th>
-								Percentage
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="beneficiary" items="${account.beneficiaries}">
+
+			<security:authorize access="hasRole('ROLE_VIEWER')">
+				<div>
+					<h2>
+						Beneficiaries
+					</h2>
+					<table class="table">
+						<thead>
 							<tr>
-								<td>${beneficiary.name}</td>
-								<td>${beneficiary.allocationPercentage}</td>
-								<td>${beneficiary.savings}</td>
+								<th>
+									Name
+								</th>
+								<th>
+									Allocation
+								</th>
+								<th>
+									Percentage
+								</th>
 							</tr>
-						</c:forEach>
-						
-						<c:if test="${ account.beneficiaries.size() == 0}">
-							<tbody><tr><td colspan="3" align="center"> --- None Registered --- </td></tr></tbody>
-						</c:if>
-					</tbody>
-				</table>
-			</div>
+						</thead>
+						<tbody>
+							<c:forEach var="beneficiary" items="${account.beneficiaries}">
+								<tr>
+									<td>${beneficiary.name}</td>
+									<td>${beneficiary.allocationPercentage}</td>
+									<td>${beneficiary.savings}</td>
+								</tr>
+							</c:forEach>
+
+							<c:if test="${ account.beneficiaries.size() == 0}">
+								<tbody><tr><td colspan="3" align="center"> --- None Registered --- </td></tr></tbody>
+							</c:if>
+						</tbody>
+					</table>
+				</div>
+			</security:authorize>
 			
 		
 			<div class="row">
 				<br />
 
-				<%-- TODO-09: - Using 'vince', go to the 'Account details' page and then click on 'Edit accounts'.
-					As you can see, access to this page is denied because 'vince' does not have the EDITOR role.
-					It would be more elegant to hide this link from 'vince' and only show it to editors.
-					- Using the 'security' tag library, hide the 'Edit Account' link unless a
-	              	user has permission to access that page (hint: use the 'access' attribute of the 'authorize'
-	              	security tag. This attribute accepts SpEL expressions.) 
-	              	- Note that when referenced in JSP, the role is ROLE_EDITOR
-	              	- Save your work (restart not needed for JSP changes)
-	              	- Try logging in as a user with and without the editor role and verify that you see 
-	              	the correct behavior.
-	              --%>
-
-				<div><a href="editAccount?entityId=${account.entityId}" class="btn btn-link">Edit Account</a></div>
+				<security:authorize access="hasRole('EDITOR')">
+					<div><a href="editAccount?entityId=${account.entityId}" class="btn btn-link">Edit Account</a></div>
+ 				</security:authorize>
 	
 				<div><a href="accountList">Return to Account List</a></div>
 
