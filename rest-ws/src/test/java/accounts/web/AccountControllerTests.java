@@ -42,8 +42,7 @@ public class AccountControllerTests {
 		assertEquals(1, accounts.size());
 		assertEquals(Long.valueOf(0), accounts.get(0).getEntityId());
 	}
-	
-	// TODO 19 (BONUS): Testing with a Mock HTTP request.
+
 	// (1) Remove the @Ignore annotation and run these tests.
 	// testCreateAccount() will fail with an IllegalStateException: "Could not
 	// find current request via RequestContextHolder". This is because
@@ -61,14 +60,13 @@ public class AccountControllerTests {
 	// other useful classes for testing Controllers like MockHttpSession
 	// and MockHttpSrvletResponse.
 	@Test
-	@Ignore
 	public void testCreateAccount() {
 		Account newAccount = new Account("11223344", "Test");
 
 		// ServletUriComponentsBuilder expects to find the HttpRequest in the
 		// current thread (Spring MVC does this for you). For our test, we need
 		// to add a mock request manually
-		//setupFakeRequest("http://localhost/accounts");
+		setupFakeRequest("http://localhost/accounts");
 
 		HttpEntity<?> result = controller.createAccount(newAccount);
 		assertNotNull(result);
